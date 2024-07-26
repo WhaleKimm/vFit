@@ -2,3 +2,11 @@
 body {
     font-family: Arial, sans-serif;
 }
+
+/* templates/index.html personalFormExample 스타일 */
+.personalFormExample {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
