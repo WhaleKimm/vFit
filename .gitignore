@@ -1,0 +1,22 @@
+# Python 기본 무시 파일
+__pycache__/
+*.py[cod]
+
+# 환경 설정 파일
+.env
+config.py
+
+# 가상 환경
+venv/
+env/
+
+# IDE 설정 파일
+.vscode/
+.idea/
+
+# 로그 파일
+*.log
+
+# 운영 체제별 무시 파일
+.DS_Store
+Thumbs.db
