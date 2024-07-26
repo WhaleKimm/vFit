@@ -1,7 +1,9 @@
 # 환경 변수 설정 방법
 
 Windows (CMD)
-'''set SECRET_KEY=your-very-secret-key'''
+'''
+set SECRET_KEY=your-very-secret-key
+'''
 
 # 파이썬 가상 환경 사용법
 
