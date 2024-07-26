@@ -1,5 +1,6 @@
 Flask==2.0.1
 Flask-SocketIO==5.1.1
-numpy==2.0.1
-matplotlib==3.9.1
+numpy==1.21.0
+matplotlib==3.4.2
 python-dotenv==0.19.2
+werkzeug==2.0.3
