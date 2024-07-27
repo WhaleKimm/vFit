@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 
 {% block title %}
-Avatar Customization - vFit
+Virtual Fitting - vFit
 {% endblock %}
 
 {% block content %}
-<h1 class="mt-4 text-center">Virtual Fitting</h1>
-<!-- 가상 피팅 HTML 추가 -->
+<div class="container text-center mt-5">
+    <h1 class="mb-4">Virtual Fitting</h1>
+
+    <!-- 아바타 미리보기 큰 빈 칸 -->
+    <div id="avatar-preview" class="mb-4">
+        <p>Virtual Fitting Here - Avatar</p>
+    </div>
+    <div id="avatar-clothes-preview" class="mb-4">
+        <p>Virtual Fitting Here - Clothes</p>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

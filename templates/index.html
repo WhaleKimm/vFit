@@ -6,108 +6,110 @@
 <h1 class="mt-4 text-center">체형 선택</h1> <!-- 체형 선택 페이지의 제목 -->
 
 <!-- 체형 옵션 컨테이너 -->
-<div class="body-shapes position-relative d-inline-block w-100">
-    <div class="row mt-3 justify-content-center">
-        <!-- 모래시계형 옵션 -->
-        <div class="col-auto">
-            <div class="form-check form-check-inline text-center">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape1" value="모래시계형">
-                <label class="form-check-label" for="shape1">
-                    <img src="{{ url_for('static', filename='images/Hourglass.png') }}" alt="모래시계형" class="img-thumbnail clickable" style="width: 150px;">
-                    <div>모래시계형</div>
-                    <div class="description mt-2 d-none">모래시계형: 모래시계형은 균형 잡힌 상체와 하체, 잘록한 허리선을 가진 체형입니다.</div>
-                </label>
+<form id="bodyShapeForm" method="POST" action="{{ url_for('avatar.avatar_customization') }}">
+    <div class="body-shapes position-relative d-inline-block w-100">
+        <div class="row mt-3 justify-content-center">
+            <!-- 모래시계형 옵션 -->
+            <div class="col-auto">
+                <div class="form-check form-check-inline text-center">
+                    <input class="form-check-input d-none" type="radio" name="body_shape" id="shape1" value="모래시계형">
+                    <label class="form-check-label" for="shape1">
+                        <img src="{{ url_for('static', filename='images/Hourglass.png') }}" alt="모래시계형" class="img-thumbnail clickable" style="width: 150px;">
+                        <div>모래시계형</div>
+                        <div class="description mt-2 d-none">모래시계형: 모래시계형은 균형 잡힌 상체와 하체, 잘록한 허리선을 가진 체형입니다.</div>
+                    </label>
+                </div>
+            </div>
+            <!-- 트릭모래시계형 옵션 -->
+            <div class="col-auto">
+                <div class="form-check form-check-inline text-center">
+                    <input class="form-check-input d-none" type="radio" name="body_shape" id="shape2" value="트릭모래시계형">
+                    <label class="form-check-label" for="shape2">
+                        <img src="{{ url_for('static', filename='images/TrickHourglass.png') }}" alt="트릭모래시계형" class="img-thumbnail clickable" style="width: 150px;">
+                        <div>트릭모래시계형</div>
+                        <div class="description mt-2 d-none">트릭모래시계형: 트릭모래시계형은 상체와 하체가 균형을 이루고 허리가 잘록하지만, 상대적으로 상체가 더 발달된 체형입니다.</div>
+                    </label>
+                </div>
+            </div>
+            <!-- 삼각형 옵션 -->
+            <div class="col-auto">
+                <div class="form-check form-check-inline text-center">
+                    <input class="form-check-input d-none" type="radio" name="body_shape" id="shape3" value="삼각형">
+                    <label class="form-check-label" for="shape3">
+                        <img src="{{ url_for('static', filename='images/Triangle.png') }}" alt="삼각형" class="img-thumbnail clickable" style="width: 150px;">
+                        <div>삼각형</div>
+                        <div class="description mt-2 d-none">삼각형: 삼각형 체형은 상체보다 하체가 더 넓고 허리선이 잘록하지 않은 체형입니다.</div>
+                    </label>
+                </div>
+            </div>
+            <!-- 역삼각형 옵션 -->
+            <div class="col-auto">
+                <div class="form-check form-check-inline text-center">
+                    <input class="form-check-input d-none" type="radio" name="body_shape" id="shape4" value="역삼각형">
+                    <label class="form-check-label" for="shape4">
+                        <img src="{{ url_for('static', filename='images/ReverseTriangle.png') }}" alt="역삼각형" class="img-thumbnail clickable" style="width: 150px;">
+                        <div>역삼각형</div>
+                        <div class="description mt-2 d-none">역삼각형: 역삼각형 체형은 어깨와 가슴이 넓고 허리와 엉덩이가 상대적으로 좁은 체형입니다.</div>
+                    </label>
+                </div>
+            </div>
+            <!-- 다이아몬드형 옵션 -->
+            <div class="col-auto">
+                <div class="form-check form-check-inline text-center">
+                    <input class="form-check-input d-none" type="radio" name="body_shape" id="shape5" value="다이아몬드형">
+                    <label class="form-check-label" for="shape5">
+                        <img src="{{ url_for('static', filename='images/Diamond.png') }}" alt="다이아몬드형" class="img-thumbnail clickable" style="width: 150px;">
+                        <div>다이아몬드형</div>
+                        <div class="description mt-2 d-none">다이아몬드형: 다이아몬드형 체형은 어깨와 엉덩이가 좁고 허리가 상대적으로 넓은 체형입니다.</div>
+                    </label>
+                </div>
+            </div>
+            <!-- 직사각형 옵션 -->
+            <div class="col-auto">
+                <div class="form-check form-check-inline text-center">
+                    <input class="form-check-input d-none" type="radio" name="body_shape" id="shape6" value="직사각형">
+                    <label class="form-check-label" for="shape6">
+                        <img src="{{ url_for('static', filename='images/Rectangle.png') }}" alt="직사각형" class="img-thumbnail clickable" style="width: 150px;">
+                        <div>직사각형</div>
+                        <div class="description mt-2 d-none">직사각형: 직사각형 체형은 어깨, 허리, 엉덩이의 폭이 비슷하고 곡선이 적은 체형입니다.</div>
+                    </label>
+                </div>
+            </div>
+            <!-- 원형 옵션 -->
+            <div class="col-auto">
+                <div class="form-check form-check-inline text-center">
+                    <input class="form-check-input d-none" type="radio" name="body_shape" id="shape7" value="원형">
+                    <label class="form-check-label" for="shape7">
+                        <img src="{{ url_for('static', filename='images/Circle.png') }}" alt="원형" class="img-thumbnail clickable" style="width: 150px;">
+                        <div>원형</div>
+                        <div class="description mt-2 d-none">원형: 원형 체형은 전체적으로 부드러운 곡선과 볼륨감이 있는 체형입니다.</div>
+                    </label>
+                </div>
             </div>
         </div>
-        <!-- 트릭모래시계형 옵션 -->
-        <div class="col-auto">
-            <div class="form-check form-check-inline text-center">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape2" value="트릭모래시계형">
-                <label class="form-check-label" for="shape2">
-                    <img src="{{ url_for('static', filename='images/TrickHourglass.png') }}" alt="트릭모래시계형" class="img-thumbnail clickable" style="width: 150px;">
-                    <div>트릭모래시계형</div>
-                    <div class="description mt-2 d-none">트릭모래시계형: 트릭모래시계형은 상체와 하체가 균형을 이루고 허리가 잘록하지만, 상대적으로 상체가 더 발달된 체형입니다.</div>
-                </label>
-            </div>
-        </div>
-        <!-- 삼각형 옵션 -->
-        <div class="col-auto">
-            <div class="form-check form-check-inline text-center">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape3" value="삼각형">
-                <label class="form-check-label" for="shape3">
-                    <img src="{{ url_for('static', filename='images/Triangle.png') }}" alt="삼각형" class="img-thumbnail clickable" style="width: 150px;">
-                    <div>삼각형</div>
-                    <div class="description mt-2 d-none">삼각형: 삼각형 체형은 상체보다 하체가 더 넓고 허리선이 잘록하지 않은 체형입니다.</div>
-                </label>
-            </div>
-        </div>
-        <!-- 역삼각형 옵션 -->
-        <div class="col-auto">
-            <div class="form-check form-check-inline text-center">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape4" value="역삼각형">
-                <label class="form-check-label" for="shape4">
-                    <img src="{{ url_for('static', filename='images/ReverseTriangle.png') }}" alt="역삼각형" class="img-thumbnail clickable" style="width: 150px;">
-                    <div>역삼각형</div>
-                    <div class="description mt-2 d-none">역삼각형: 역삼각형 체형은 어깨와 가슴이 넓고 허리와 엉덩이가 상대적으로 좁은 체형입니다.</div>
-                </label>
-            </div>
-        </div>
-        <!-- 다이아몬드형 옵션 -->
-        <div class="col-auto">
-            <div class="form-check form-check-inline text-center">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape5" value="다이아몬드형">
-                <label class="form-check-label" for="shape5">
-                    <img src="{{ url_for('static', filename='images/Diamond.png') }}" alt="다이아몬드형" class="img-thumbnail clickable" style="width: 150px;">
-                    <div>다이아몬드형</div>
-                    <div class="description mt-2 d-none">다이아몬드형: 다이아몬드형 체형은 어깨와 엉덩이가 좁고 허리가 상대적으로 넓은 체형입니다.</div>
-                </label>
-            </div>
-        </div>
-        <!-- 직사각형 옵션 -->
-        <div class="col-auto">
-            <div class="form-check form-check-inline text-center">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape6" value="직사각형">
-                <label class="form-check-label" for="shape6">
-                    <img src="{{ url_for('static', filename='images/Rectangle.png') }}" alt="직사각형" class="img-thumbnail clickable" style="width: 150px;">
-                    <div>직사각형</div>
-                    <div class="description mt-2 d-none">직사각형: 직사각형 체형은 어깨, 허리, 엉덩이의 폭이 비슷하고 곡선이 적은 체형입니다.</div>
-                </label>
-            </div>
-        </div>
-        <!-- 원형 옵션 -->
-        <div class="col-auto">
-            <div class="form-check form-check-inline text-center">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape7" value="원형">
-                <label class="form-check-label" for="shape7">
-                    <img src="{{ url_for('static', filename='images/Circle.png') }}" alt="원형" class="img-thumbnail clickable" style="width: 150px;">
-                    <div>원형</div>
-                    <div class="description mt-2 d-none">원형: 원형 체형은 전체적으로 부드러운 곡선과 볼륨감이 있는 체형입니다.</div>
-                </label>
-            </div>
-        </div>
-    </div>
 
-    <!-- 설명이 표시될 구역 -->
-    <div id="description-area" class="mt-4 text-center"></div>
+        <!-- 설명이 표시될 구역 -->
+        <div id="description-area" class="mt-4 text-center"></div>
 
-    <!-- 키와 몸무게 입력 필드 -->
-    <div>
-        <div class="col-auto">
-            <label for="height" class="form-label">키 (cm)</label> <!-- 키 입력 레이블 -->
-            <input type="number" class="form-control" id="height" name="height" placeholder="키를 입력하세요" style="width: 200px;"> <!-- 키 입력 필드 -->
+        <!-- 키와 몸무게 입력 필드 -->
+        <div>
+            <div class="col-auto">
+                <label for="height" class="form-label">키 (cm)</label> <!-- 키 입력 레이블 -->
+                <input type="number" class="form-control" id="height" name="height" placeholder="키를 입력하세요" style="width: 200px;"> <!-- 키 입력 필드 -->
+            </div>
+            <div class="col-auto">
+                <label for="weight" class="form-label">몸무게 (kg)</label> <!-- 몸무게 입력 레이블 -->
+                <input type="number" class="form-control" id="weight" name="weight" placeholder="몸무게를 입력하세요" style="width: 200px;"> <!-- 몸무게 입력 필드 -->
+            </div>
         </div>
-        <div class="col-auto">
-            <label for="weight" class="form-label">몸무게 (kg)</label> <!-- 몸무게 입력 레이블 -->
-            <input type="number" class="form-control" id="weight" name="weight" placeholder="몸무게를 입력하세요" style="width: 200px;"> <!-- 몸무게 입력 필드 -->
+        <!-- 제출 버튼 -->
+        <div class="row mt-4 justify-content-center">
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">제출</button> <!-- 제출 버튼 -->
+            </div>
         </div>
     </div>
-    <!-- 제출 버튼 -->
-    <div class="row mt-4 justify-content-center">
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary">제출</button> <!-- 제출 버튼 -->
-        </div>
-    </div>
-</div>
+</form>
 {% endblock %}
 
 {% block scripts %}
