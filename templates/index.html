@@ -3,59 +3,86 @@
 {% block title %}Home - vFit{% endblock %}
 
 {% block content %}
-<h1 class="mt-4">체형 선택</h1>
-<div class="body-shapes position-relative d-inline-block">
-    <div class="row mt-3">
-        <div class="col-12 d-flex justify-content-between">
-            <div class="form-check form-check-inline">
+<h1 class="mt-4 text-center">체형 선택</h1>
+<div class="body-shapes position-relative d-inline-block w-100">
+    <div class="row mt-3 justify-content-center">
+        <div class="col-auto">
+            <div class="form-check form-check-inline text-center">
                 <input class="form-check-input d-none" type="radio" name="body_shape" id="shape1" value="모래시계형">
                 <label class="form-check-label" for="shape1">
-                    <img src="{{ url_for('static', filename='images/Form1.png') }}" alt="모래시계형" class="img-thumbnail">
+                    <img src="{{ url_for('static', filename='images/Hourglass.png') }}" alt="모래시계형" class="img-thumbnail" style="width: 150px;">
                     <div>모래시계형</div>
                 </label>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape2" value="트렁크로시계형">
+        </div>
+        <div class="col-auto">
+            <div class="form-check form-check-inline text-center">
+                <input class="form-check-input d-none" type="radio" name="body_shape" id="shape2" value="트릭모래시계형">
                 <label class="form-check-label" for="shape2">
-                    <img src="{{ url_for('static', filename='images/Form2.png') }}" alt="트렁크로시계형" class="img-thumbnail">
-                    <div>트렁크로시계형</div>
+                    <img src="{{ url_for('static', filename='images/TrickHourglass.png') }}" alt="트릭모래시계형" class="img-thumbnail" style="width: 150px;">
+                    <div>트릭모래시계형</div>
                 </label>
             </div>
-            <div class="form-check form-check-inline">
+        </div>
+        <div class="col-auto">
+            <div class="form-check form-check-inline text-center">
                 <input class="form-check-input d-none" type="radio" name="body_shape" id="shape3" value="삼각형">
                 <label class="form-check-label" for="shape3">
-                    <img src="{{ url_for('static', filename='images/Form3.png') }}" alt="삼각형" class="img-thumbnail">
+                    <img src="{{ url_for('static', filename='images/Triangle.png') }}" alt="삼각형" class="img-thumbnail" style="width: 150px;">
                     <div>삼각형</div>
                 </label>
             </div>
-            <div class="form-check form-check-inline">
+        </div>
+        <div class="col-auto">
+            <div class="form-check form-check-inline text-center">
                 <input class="form-check-input d-none" type="radio" name="body_shape" id="shape4" value="역삼각형">
                 <label class="form-check-label" for="shape4">
-                    <img src="{{ url_for('static', filename='images/Form4.png') }}" alt="역삼각형" class="img-thumbnail">
+                    <img src="{{ url_for('static', filename='images/ReverseTriangle.png') }}" alt="역삼각형" class="img-thumbnail" style="width: 150px;">
                     <div>역삼각형</div>
                 </label>
             </div>
-            <div class="form-check form-check-inline">
+        </div>
+        <div class="col-auto">
+            <div class="form-check form-check-inline text-center">
                 <input class="form-check-input d-none" type="radio" name="body_shape" id="shape5" value="다이아몬드형">
                 <label class="form-check-label" for="shape5">
-                    <img src="{{ url_for('static', filename='images/Form5.png') }}" alt="다이아몬드형" class="img-thumbnail">
+                    <img src="{{ url_for('static', filename='images/Diamond.png') }}" alt="다이아몬드형" class="img-thumbnail" style="width: 150px;">
                     <div>다이아몬드형</div>
                 </label>
             </div>
-            <div class="form-check form-check-inline">
+        </div>
+        <div class="col-auto">
+            <div class="form-check form-check-inline text-center">
                 <input class="form-check-input d-none" type="radio" name="body_shape" id="shape6" value="직사각형">
                 <label class="form-check-label" for="shape6">
-                    <img src="{{ url_for('static', filename='images/Form6.png') }}" alt="직사각형" class="img-thumbnail">
+                    <img src="{{ url_for('static', filename='images/Rectangle.png') }}" alt="직사각형" class="img-thumbnail" style="width: 150px;">
                     <div>직사각형</div>
                 </label>
             </div>
-            <div class="form-check form-check-inline">
+        </div>
+        <div class="col-auto">
+            <div class="form-check form-check-inline text-center">
                 <input class="form-check-input d-none" type="radio" name="body_shape" id="shape7" value="원형">
                 <label class="form-check-label" for="shape7">
-                    <img src="{{ url_for('static', filename='images/Form7.png') }}" alt="원형" class="img-thumbnail">
+                    <img src="{{ url_for('static', filename='images/Circle.png') }}" alt="원형" class="img-thumbnail" style="width: 150px;">
                     <div>원형</div>
                 </label>
             </div>
+        </div>
+    </div>
+    <div class>
+        <div class="col-auto">
+            <label for="height" class="form-label">키 (cm)</label>
+            <input type="number" class="form-control" id="height" name="height" placeholder="키를 입력하세요" style="width: 200px;">
+        </div>
+        <div class="col-auto">
+            <label for="weight" class="form-label">몸무게 (kg)</label>
+            <input type="number" class="form-control" id="weight" name="weight" placeholder="몸무게를 입력하세요" style="width: 200px;">
+        </div>
+    </div>
+    <div class="row mt-4 justify-content-center">
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">제출</button>
         </div>
     </div>
 </div>
