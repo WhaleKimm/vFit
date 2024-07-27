@@ -7,8 +7,10 @@
     <h1 class="mb-4">Customize Your Avatar</h1>
 
     <!-- 아바타 미리보기 큰 빈 칸 -->
-    <div id="avatar-preview" class="mb-4">
-        <p>Avatar Preview Here</p>
+    <div id="avatar-preview-container">
+        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
+            
+        </div>
     </div>
 
     <!-- 사이즈 조절 토글바 -->
@@ -25,5 +27,8 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
 <script src="{{ url_for('static', filename='js/avatar_customization.js') }}"></script>
 {% endblock %}
