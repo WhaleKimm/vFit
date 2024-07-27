@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avatar Customization</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-    <h1>Customize Your Avatar</h1>
-    <!-- 아바타 커스터마이즈 HTML 추가 -->
-    <script src="/static/js/socket.js"></script>
-    <script src="/static/js/avatar_customization.js"></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+Avatar Customization - vFit
+{% endblock %}
+
+{% block content %}
+<h1>Customize Your Avatar</h1>
+<!-- 아바타 커스터마이즈 HTML 추가 -->
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/socket.js') }}"></script>
+<script src="{{ url_for('static', filename='js/avatar_customization.js') }}"></script>
+{% endblock %}
