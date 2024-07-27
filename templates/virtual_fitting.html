@@ -1,15 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual Fitting</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-    <h1>Virtual Fitting Room</h1>
-    <!-- 가상 피팅 HTML 추가 -->
-    <script src="/static/js/socket.js"></script>
-    <script src="/static/js/virtual_fitting.js"></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+Virtual Fitting - vFit
+{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="mb-4">Virtual Fitting</h1>
+
+    <!-- 아바타 미리보기 큰 빈 칸 -->
+    <div id="avatar-preview-container" class="mb-4 d-flex justify-content-center">
+        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
+            
+        </div>
+    </div>
+    <div id="avatar-clothes-preview" class="mb-4">
+        <p>Virtual Fitting Here - Clothes</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
+<script src="{{ url_for('static', filename='js/socket.js') }}"></script>
+<script src="{{ url_for('static', filename='js/virtual_fitting.js') }}"></script>
+{% endblock %}
