@@ -15,4 +15,4 @@ app.register_blueprint(fitting_bp, url_prefix='/fitting')
 print(app.url_map)
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, debug=True)

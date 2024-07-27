@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual Fitting</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-    <h1>Virtual Fitting Room</h1>
-    <!-- 가상 피팅 HTML 추가 -->
-    <script src="/static/js/socket.js"></script>
-    <script src="/static/js/virtual_fitting.js"></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+Avatar Customization - vFit
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-4 text-center">Virtual Fitting</h1>
+<!-- 가상 피팅 HTML 추가 -->
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/socket.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Virtual_fitting.js') }}"></script>
+{% endblock %}
