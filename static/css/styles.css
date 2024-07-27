@@ -1,12 +1,62 @@
-/* 커스텀 스타일 추가 */
 body {
     font-family: Arial, sans-serif;
 }
 
-/* templates/index.html personalFormExample 스타일 */
+/* 이미지와 체크박스를 포함하는 컨테이너 */
+.body-shapes {
+    position: relative;
+    display: inline-block;
+}
+
+/* 반응형 이미지를 위한 클래스 */
 .personalFormExample {
-    max-width: 100%;
+    width: 100%;
+    max-width: 800px;
     height: auto;
-    display: block;
-    margin: 0 auto;
+}
+
+/* 체크박스 그룹을 설정하는 클래스 */
+.checkbox-group {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+/* 개별 체크박스 컨테이너를 설정하는 클래스 */
+.checkbox-container {
+    position: relative;
+    width: 12%;
+    height: 100%;
+}
+
+/* 체크박스 스타일 */
+.checkbox-container input[type="checkbox"] {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+}
+
+/* 체크박스의 원형 배경 */
+.checkmark {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+/* 체크박스가 선택되었을 때의 스타일 */
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+    background-color: #2196F3;
 }

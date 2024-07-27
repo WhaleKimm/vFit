@@ -1,18 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vFit</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/static/images/favicon.png" type="image/png">
-</head>
-<body>
-    <h1>Select Your Avatar</h1>
-    <!-- 아바타 선택 HTML 추가 -->
-    <img src="/static/images/personalForm.png" alt="personalFormExample" class="personalFormExample">
-    <script src="/static/js/socket.js"></script>
-    <script src="/static/js/avatar_selection.js"></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Home - vFit{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">체형 선택</h1>
+<div class="body-shapes position-relative d-inline-block">
+    <img src="{{ url_for('static', filename='images/personalForm.png') }}" alt="Body Shapes" class="personalFormExample img-fluid">
+    <div class="checkbox-group position-absolute w-100 h-100 d-flex justify-content-between align-items-end px-2">
+        <label class="checkbox-container position-relative w-12 h-100">
+            <input type="checkbox" name="body_shape" value="모래시계형">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container position-relative w-12 h-100">
+            <input type="checkbox" name="body_shape" value="트렁크로시계형">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container position-relative w-12 h-100">
+            <input type="checkbox" name="body_shape" value="삼각형">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container position-relative w-12 h-100">
+            <input type="checkbox" name="body_shape" value="역삼각형">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container position-relative w-12 h-100">
+            <input type="checkbox" name="body_shape" value="다이아몬드형">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container position-relative w-12 h-100">
+            <input type="checkbox" name="body_shape" value="직사각형">
+            <span class="checkmark"></span>
+        </label>
+        <label class="checkbox-container position-relative w-12 h-100">
+            <input type="checkbox" name="body_shape" value="원형">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+</div>
+{% endblock %}
