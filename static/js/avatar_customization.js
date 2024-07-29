@@ -1,3 +1,4 @@
+// avatar_customization.js
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('Avatar customization script loaded');
     const avatarPreview = document.getElementById('avatar-preview');

@@ -1,3 +1,4 @@
+# render_human_model.py
 import bpy
 import os
 
