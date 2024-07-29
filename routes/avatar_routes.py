@@ -1,3 +1,4 @@
+# avatar_routes.py
 from flask import Blueprint, render_template, request, jsonify
 from flask_socketio import emit
 from . import avatar_bp
