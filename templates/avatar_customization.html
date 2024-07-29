@@ -7,21 +7,23 @@
     <h1 class="mb-4">Customize Your Avatar</h1>
 
     <!-- 아바타 미리보기 큰 빈 칸 -->
-    <div id="avatar-preview-container">
-        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
-            
+    <div id="avatar-preview-container" class="mb-4 d-flex justify-content-center">
+        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" data-body-shape="{{ body_shape }}" data-height="{{ height }}" data-weight="{{ weight }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
+            <p>Loading 3D Model...</p>
         </div>
     </div>
 
-    <!-- 사이즈 조절 토글바 -->
-    <div class="slider-container">
-        <label for="sizeSlider" class="form-label">Avatar Size:</label>
-        <input type="range" class="form-range" id="sizeSlider" min="50" max="200" step="1" value="100">
+    <!-- 선택된 체형과 키, 몸무게를 표시하는 영역 -->
+    <div id="avatar-info" class="mt-3">
+        <p><strong>Selected Body Shape:</strong> {{ body_shape }}</p>
+        <p><strong>Height:</strong> {{ height }} cm</p>
+        <p><strong>Weight:</strong> {{ weight }} kg</p>
     </div>
 
-    <!-- 현재 크기 표시 -->
-    <div id="sizeValue" class="mt-3">
-        <p>Current Size: <span id="sizeDisplay">100</span>%</p>
+    <!-- 버튼 영역 -->
+    <div class="mt-4">
+        <button id="edit-button" class="btn btn-secondary" data-edit-url="{{ url_for('main.index') }}">수정</button>
+        <button id="fitting-button" class="btn btn-primary" data-fitting-url="{{ url_for('fitting.virtual_fitting', height=height, weight=weight, body_shape=body_shape) }}">피팅하기</button>
     </div>
 </div>
 {% endblock %}

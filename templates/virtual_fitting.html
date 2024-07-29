@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}
-Virtual Fitting - vFit
-{% endblock %}
+{% block title %}Virtual Fitting - vFit{% endblock %}
 
 {% block content %}
 <div class="container text-center mt-5">
@@ -10,10 +8,18 @@ Virtual Fitting - vFit
 
     <!-- 아바타 미리보기 큰 빈 칸 -->
     <div id="avatar-preview-container" class="mb-4 d-flex justify-content-center">
-        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
-            
+        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" data-body-shape="{{ request.args.get('body_shape') }}" data-height="{{ request.args.get('height') }}" data-weight="{{ request.args.get('weight') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
+            <p>Loading 3D Model...</p>
         </div>
     </div>
+
+    <!-- 선택된 체형과 키, 몸무게를 표시하는 영역 -->
+    <div id="avatar-info" class="mt-3">
+        <p><strong>Body Shape:</strong> {{ request.args.get('body_shape') }}</p>
+        <p><strong>Height:</strong> {{ request.args.get('height') }} cm</p>
+        <p><strong>Weight:</strong> {{ request.args.get('weight') }} kg</p>
+    </div>
+
     <div id="avatar-clothes-preview" class="mb-4">
         <p>Virtual Fitting Here - Clothes</p>
     </div>
