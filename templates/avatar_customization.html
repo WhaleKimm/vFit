@@ -1,36 +1,22 @@
-<!-- avatar_customization.html -->
-
-{% extends "base.html" %}
-
-{% block title %}Avatar Customization - vFit{% endblock %}
-
-{% block content %}
-<div class="container text-center mt-5">
-    <h1 class="mb-4">Customize Your Avatar</h1>
-
-    <!-- 아바타 미리보기 큰 빈 칸 -->
-    <div id="avatar-preview-container">
-        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
-            
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Customization - vFit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1 class="mb-4">Customize Your Avatar</h1>
+        <div id="avatar-preview-container">
+            <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/realistic_female.glb') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;"></div>
         </div>
+        <div id="sliders-container" class="mt-5"></div>
     </div>
-
-    <!-- 사이즈 조절 토글바 -->
-    <div class="slider-container">
-        <label for="sizeSlider" class="form-label">Avatar Size:</label>
-        <input type="range" class="form-range" id="sizeSlider" min="50" max="200" step="1" value="100">
-    </div>
-
-    <!-- 현재 크기 표시 -->
-    <div id="sizeValue" class="mt-3">
-        <p>Current Size: <span id="sizeDisplay">100</span>%</p>
-    </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
-<script src="{{ url_for('static', filename='js/avatar_customization.js') }}"></script>
-{% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="{{ url_for('static', filename='js/avatar_customization.js') }}"></script>
+</body>
+</html>
