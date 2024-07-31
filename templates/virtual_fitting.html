@@ -8,7 +8,7 @@
 
     <!-- 아바타 미리보기 큰 빈 칸 -->
     <div id="avatar-preview-container" class="mb-4 d-flex justify-content-center">
-        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" data-body-shape="{{ request.args.get('body_shape') }}" data-height="{{ request.args.get('height') }}" data-weight="{{ request.args.get('weight') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
+        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/realistic_female.glb') }}" data-url-params="{{ request.query_string.decode('utf-8') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
             <p>Loading 3D Model...</p>
         </div>
     </div>

@@ -1,5 +1,3 @@
-<!-- avatar_customization.html -->
-
 {% extends "base.html" %}
 
 {% block title %}Avatar Customization - vFit{% endblock %}
@@ -10,7 +8,7 @@
 
     <!-- 아바타 미리보기 큰 빈 칸 -->
     <div id="avatar-preview-container" class="mb-4 d-flex justify-content-center">
-        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/model.glb') }}" data-body-shape="{{ body_shape }}" data-height="{{ height }}" data-weight="{{ weight }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
+        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/realistic_female.glb') }}" data-body-shape="{{ body_shape }}" data-height="{{ height }}" data-weight="{{ weight }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
             <p>Loading 3D Model...</p>
         </div>
     </div>
@@ -22,10 +20,13 @@
         <p><strong>Weight:</strong> {{ weight }} kg</p>
     </div>
 
+    <!-- 슬라이더 컨테이너 -->
+    <div id="sliders-container" class="mt-5"></div>
+
     <!-- 버튼 영역 -->
     <div class="mt-4">
         <button id="edit-button" class="btn btn-secondary" data-edit-url="{{ url_for('main.index') }}">수정</button>
-        <button id="fitting-button" class="btn btn-primary" data-fitting-url="{{ url_for('fitting.virtual_fitting', height=height, weight=weight, body_shape=body_shape) }}">피팅하기</button>
+        <button id="fitting-button" class="btn btn-primary" data-fitting-url="{{ url_for('fitting.virtual_fitting') }}">피팅하기</button>
     </div>
 </div>
 {% endblock %}

@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // data-model-path 속성 확인
     const modelPath = avatarPreview.getAttribute('data-model-path');
-    const bodyShape = avatarPreview.getAttribute('data-body-shape');
-    const height = parseFloat(avatarPreview.getAttribute('data-height'));
-    const weight = parseFloat(avatarPreview.getAttribute('data-weight'));
+    const urlParams = new URLSearchParams(avatarPreview.getAttribute('data-url-params'));
 
-    if (!modelPath || !bodyShape || isNaN(height) || isNaN(weight)) {
+    const height = parseFloat(urlParams.get('height'));
+    const weight = parseFloat(urlParams.get('weight'));
+    const bodyShape = urlParams.get('body_shape');
+
+    if (!modelPath || isNaN(height) || isNaN(weight) || !bodyShape) {
         console.error('Model path, body shape, height, or weight not found or invalid');
         return;
     }
@@ -23,30 +25,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
     renderer.setSize(avatarPreview.clientWidth, avatarPreview.clientHeight);
     avatarPreview.appendChild(renderer.domElement);
 
+    // 로딩 중 텍스트 제거
+    const loadingText = avatarPreview.querySelector('p');
+    if (loadingText) {
+        avatarPreview.removeChild(loadingText);
+    }
+
     // 조명 추가
     const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);
 
     const loader = new THREE.GLTFLoader();
     let model;
+    const bones = [];
 
     loader.load(modelPath, function(gltf) {
         model = gltf.scene;
         scene.add(model);
 
-        // 로딩 중 텍스트 제거
-        const loadingText = avatarPreview.querySelector('p');
-        if (loadingText) {
-            avatarPreview.removeChild(loadingText);
-        }
+        const skeleton = new THREE.SkeletonHelper(model);
+        skeleton.visible = true;
+        scene.add(skeleton);
 
-        model.scale.set(1, 1, 1);  // 초기 스케일 설정
-        camera.position.z=3; // 카메라 위치 조정
+        model.scale.set(1, 1, 1);
+        camera.position.z = 5;
 
         // 키와 몸무게에 따른 스케일 조정
         const heightScale = height / initialHeight;
         const weightScale = weight / initialWeight;
         model.scale.set(weightScale, heightScale, weightScale);
+
+        // 각 뼈에 대해 URL 매개변수에서 스케일 설정
+        model.traverse((node) => {
+            if (node.isBone) {
+                bones.push(node);
+                const scale = parseFloat(urlParams.get(`${node.name}Size`)) / 100 || 1;
+                node.scale.set(scale, scale, scale);
+                console.log(`Loaded ${node.name} scale to ${scale}`);
+            }
+        });
 
         // OrbitControls 추가
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
