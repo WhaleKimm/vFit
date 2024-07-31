@@ -37,9 +37,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
         avatarPreview.removeChild(loadingText);
     }
 
+
+    // 배경 색상 설정 (덜 짙은 색)
+    renderer.setClearColor(0x999999);
+
+  
     // 조명 추가
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // 밝은 환경광
     scene.add(ambientLight);
+
+    // 추가 조명
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight1.position.set(1, 1, 1).normalize();
+    scene.add(directionalLight1);
+
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight2.position.set(-1, 1, -1).normalize();
+    scene.add(directionalLight2);
+
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight3.position.set(-1, -1, 1).normalize();
+    scene.add(directionalLight3);
+
+    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight4.position.set(1, -1, -1).normalize();
+    scene.add(directionalLight4);
 
     const loader = new THREE.GLTFLoader();
     let model;
@@ -50,7 +72,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         scene.add(model);
 
         const skeleton = new THREE.SkeletonHelper(model);
-        skeleton.visible = true;
+        skeleton.visible = false;
         scene.add(skeleton);
 
         model.scale.set(1, 1, 1);
@@ -84,6 +106,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     roughness: child.material.roughness,
                     metalness: child.material.metalness
                 });
+               
             }
         });
 
