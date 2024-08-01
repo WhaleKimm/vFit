@@ -36,10 +36,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (loadingText) {
         avatarPreview.removeChild(loadingText);
     }
+    
 
 
     // 배경 색상 설정 (덜 짙은 색)
-    renderer.setClearColor(0x999999);
+    renderer.setClearColor(0xdddddd);
 
   
     // 조명 추가
@@ -74,9 +75,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const skeleton = new THREE.SkeletonHelper(model);
         skeleton.visible = false;
         scene.add(skeleton);
+        // 모델이 앞을 보도록 회전
+        model.rotation.y = Math.PI; // 180도 회전
 
         model.scale.set(1, 1, 1);
         camera.position.z = 5;
+        // 모델의 바운딩 박스를 계산하여 모델의 중심을 구함
+        const box = new THREE.Box3().setFromObject(model);
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+        model.position.sub(center); // 모델의 중심을 원점으로 이동
+
+        camera.position.set(0, center.y, 2); // 카메라 위치 조정 (허리 높이에 맞춤)
+        camera.lookAt(new THREE.Vector3(0, center.y, 0)); // 카메라가 허리 높이를 바라보도록 설정
 
         // 키와 몸무게에 따른 스케일 조정
         const heightScale = height / initialHeight;
