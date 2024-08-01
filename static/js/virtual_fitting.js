@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const loader = new THREE.GLTFLoader();
     let model;
     const hiddenObjects = []; // 숨겨진 객체를 저장하는 배열
+    const clothes = {}; // 옷 객체를 저장할 변수
 
     loader.load(modelPath, function(gltf) {
         model = gltf.scene;
@@ -111,6 +112,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
+        // 옷 객체 저장
+        clothes.shirt = model.getObjectByName("Object_148");
+        clothes.pants = model.getObjectByName("Object_141");
+        clothes.underwear = model.getObjectByName("Object_139");
+        clothes.other = model.getObjectByName("Object_137");
+
         // OrbitControls 추가
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.update();
@@ -130,6 +137,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('show-pants').addEventListener('click', () => toggleClothingVisibility('Object_141'));
     document.getElementById('show-underwear').addEventListener('click', () => toggleClothingVisibility('Object_139'));
     document.getElementById('show-other').addEventListener('click', () => toggleClothingVisibility('Object_137'));
+
+    // 색상 변경 이벤트 핸들러 추가
+    document.getElementById('shirt-color').addEventListener('input', (event) => {
+        if (clothes.shirt) {
+            clothes.shirt.material.color.set(event.target.value);
+            console.log(`Changed shirt color to: ${event.target.value}`);
+        }
+    });
+    document.getElementById('pants-color').addEventListener('input', (event) => {
+        if (clothes.pants) {
+            clothes.pants.material.color.set(event.target.value);
+            console.log(`Changed pants color to: ${event.target.value}`);
+        }
+    });
+    document.getElementById('underwear-color').addEventListener('input', (event) => {
+        if (clothes.underwear) {
+            clothes.underwear.material.color.set(event.target.value);
+            console.log(`Changed underwear color to: ${event.target.value}`);
+        }
+    });
+    document.getElementById('other-color').addEventListener('input', (event) => {
+        if (clothes.other) {
+            clothes.other.material.color.set(event.target.value);
+            console.log(`Changed other color to: ${event.target.value}`);
+        }
+    });
 
     // 옷의 가시성을 토글하는 함수
     function toggleClothingVisibility(objectName) {
