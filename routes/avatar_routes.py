@@ -1,6 +1,4 @@
 from flask import Blueprint, render_template, request, jsonify
-# 아바타 관련 블루프린트 생성
-
 from flask_socketio import emit
 from . import avatar_bp
 
