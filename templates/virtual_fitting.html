@@ -20,16 +20,44 @@
         <p><strong>Weight:</strong> {{ request.args.get('weight') }} kg</p>
     </div>
 
-  
-
+    <!-- 옷 입히기/벗기기 버튼들 -->
     <div id="avatar-clothes-preview" class="mb-4">
-        <!-- 옷을 다시 입히기 위한 버튼 영역 -->
-    <div class="mt-4">
-        <button id="show-shirt" class="btn btn-primary">셔츠 입기/벗기</button>
-        <button id="show-pants" class="btn btn-primary">바지 입기/벗기</button>
-        <button id="show-underwear" class="btn btn-primary">속옷 입기/벗기</button>
-        <button id="show-other" class="btn btn-primary">신발 신기/벗기</button>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <button id="show-shirt" class="btn btn-primary w-100">셔츠 입기/벗기</button>
+            </div>
+            <div class="col-md-3 mb-3">
+                <button id="show-pants" class="btn btn-primary w-100">바지 입기/벗기</button>
+            </div>
+            <div class="col-md-3 mb-3">
+                <button id="show-underwear" class="btn btn-primary w-100">속옷 입기/벗기</button>
+            </div>
+            <div class="col-md-3 mb-3">
+                <button id="show-other" class="btn btn-primary w-100">신발 신기/벗기</button>
+            </div>
+        </div>
     </div>
+
+    <!-- 옷 색상 변경 -->
+    <div id="avatar-clothes-color" class="mb-4">
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="shirt-color" class="form-label">셔츠 색 변경:</label>
+                <input type="color" id="shirt-color" name="shirt-color" class="form-control form-control-color" value="#ff0000">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="pants-color" class="form-label">바지 색 변경:</label>
+                <input type="color" id="pants-color" name="pants-color" class="form-control form-control-color" value="#00ff00">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="underwear-color" class="form-label">속옷 색 변경:</label>
+                <input type="color" id="underwear-color" name="underwear-color" class="form-control form-control-color" value="#0000ff">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="other-color" class="form-label">신발 색 변경:</label>
+                <input type="color" id="other-color" name="other-color" class="form-control form-control-color" value="#ffff00">
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
