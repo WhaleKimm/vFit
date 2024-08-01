@@ -1,27 +1,72 @@
 {% extends "base.html" %}
 
-{% block title %}Avatar Customization - vFit{% endblock %}
+{% block title %}아바타 맞춤 설정 - vFit{% endblock %}
 
 {% block content %}
 <div class="container text-center mt-5">
-    <h1 class="mb-4">Customize Your Avatar</h1>
+    <h1 class="mb-4">아바타 맞춤 설정</h1>
 
     <!-- 아바타 미리보기 큰 빈 칸 -->
     <div id="avatar-preview-container" class="mb-4 d-flex justify-content-center">
         <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/realistic_female.glb') }}" data-body-shape="{{ body_shape }}" data-height="{{ height }}" data-weight="{{ weight }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
-            <p>Loading 3D Model...</p>
+            <p>3D 모델 로드 중...</p>
         </div>
     </div>
 
     <!-- 선택된 체형과 키, 몸무게를 표시하는 영역 -->
     <div id="avatar-info" class="mt-3">
-        <p><strong>Selected Body Shape:</strong> {{ body_shape }}</p>
-        <p><strong>Height:</strong> {{ height }} cm</p>
-        <p><strong>Weight:</strong> {{ weight }} kg</p>
+        <p><strong>선택된 체형:</strong> {{ body_shape }}</p>
+        <p><strong>키:</strong> {{ height }} cm</p>
+        <p><strong>몸무게:</strong> {{ weight }} kg</p>
     </div>
 
-    <!-- 슬라이더 컨테이너 -->
-    <div id="sliders-container" class="mt-5"></div>
+    <!-- 슬라이더 및 입력 필드 컨테이너 -->
+    <div id="sliders-container" class="mt-5">
+        <form id="customizationForm">
+            <!-- 상체 입력 -->
+            <div class="form-group">
+                <label for="shoulderWidth">어깨 너비 (cm):</label>
+                <input type="number" id="shoulderWidth" name="shoulderWidth" value="46">
+                <input type="range" id="shoulderWidthSlider" min="30" max="60" step="1" value="46">
+            </div>
+            <div class="form-group">
+                <label for="chestCircumference">가슴 둘레 (cm):</label>
+                <input type="number" id="chestCircumference" name="chestCircumference" value="100">
+                <input type="range" id="chestCircumferenceSlider" min="70" max="120" step="1" value="100">
+            </div>
+            <div class="form-group">
+                <label for="armLength">팔 길이 (cm):</label>
+                <input type="number" id="armLength" name="armLength" value="60">
+                <input type="range" id="armLengthSlider" min="50" max="70" step="1" value="60">
+            </div>
+            <!-- 하체 입력 -->
+            <div class="form-group">
+                <label for="waistCircumference">허리 둘레 (cm):</label>
+                <input type="number" id="waistCircumference" name="waistCircumference" value="70">
+                <input type="range" id="waistCircumferenceSlider" min="50" max="100" step="1" value="70">
+            </div>
+            <div class="form-group">
+                <label for="hipCircumference">엉덩이 둘레 (cm):</label>
+                <input type="number" id="hipCircumference" name="hipCircumference" value="95">
+                <input type="range" id="hipCircumferenceSlider" min="80" max="120" step="1" value="95">
+            </div>
+            <div class="form-group">
+                <label for="thighCircumference">허벅지 둘레 (cm):</label>
+                <input type="number" id="thighCircumference" name="thighCircumference" value="55">
+                <input type="range" id="thighCircumferenceSlider" min="40" max="70" step="1" value="55">
+            </div>
+            <div class="form-group">
+                <label for="inseam">다리 길이 (cm):</label>
+                <input type="number" id="inseam" name="inseam" value="80">
+                <input type="range" id="inseamSlider" min="60" max="110" step="1" value="80">
+            </div>
+            <div class="form-group">
+                <label for="ankleCircumference">발목 둘레 (cm):</label>
+                <input type="number" id="ankleCircumference" name="ankleCircumference" value="25">
+                <input type="range" id="ankleCircumferenceSlider" min="20" max="40" step="1" value="25">
+            </div>
+        </form>
+    </div>
 
     <!-- 버튼 영역 -->
     <div class="mt-4">

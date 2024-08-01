@@ -1,75 +1,64 @@
+let bones = []; // bones 변수를 전역으로 선언
+
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('Avatar customization script loaded');
 
-    // 아바타 미리보기와 슬라이더 컨테이너 엘리먼트를 가져옴
     const avatarPreview = document.getElementById('avatar-preview');
     const slidersContainer = document.getElementById('sliders-container');
 
-    // 모델 경로, 체형, 키, 몸무게 속성을 확인
     const modelPath = avatarPreview.getAttribute('data-model-path');
     const bodyShape = avatarPreview.getAttribute('data-body-shape');
     const height = parseFloat(avatarPreview.getAttribute('data-height'));
     const weight = parseFloat(avatarPreview.getAttribute('data-weight'));
 
-    // 모델 경로, 체형, 키, 몸무게가 유효한지 확인
     if (!modelPath || !bodyShape || isNaN(height) || isNaN(weight)) {
         console.error('Model path, body shape, height, or weight not found or invalid');
         return;
     }
 
-    const initialHeight = 170; // 초기 키 값
-    const initialWeight = 70; // 초기 몸무게 값
+    const initialHeight = 170;
+    const initialWeight = 70;
 
-    // 선택된 체형과 키, 몸무게를 표시
     const avatarInfo = document.getElementById('avatar-info');
     avatarInfo.innerHTML = `
-        <p><strong>Selected Body Shape:</strong> ${bodyShape}</p>
-        <p><strong>Height:</strong> ${height} cm</p>
-        <p><strong>Weight:</strong> ${weight} kg</p>
+        <p><strong>선택된 체형:</strong> ${bodyShape}</p>
+        <p><strong>키:</strong> ${height} cm</p>
+        <p><strong>몸무게:</strong> ${weight} kg</p>
     `;
 
-    // Three.js를 사용하여 3D 모델을 로드하고 렌더링
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, avatarPreview.clientWidth / avatarPreview.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(avatarPreview.clientWidth, avatarPreview.clientHeight);
     avatarPreview.appendChild(renderer.domElement);
 
-    // 로딩 중 텍스트 제거
     const loadingText = avatarPreview.querySelector('p');
     if (loadingText) {
         avatarPreview.removeChild(loadingText);
     }
 
-    // 배경 색상 설정 (덜 짙은 색)
     renderer.setClearColor(0xdddddd);
 
-    // 조명 추가
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // 밝은 환경광
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
 
-    // 추가 조명 설정
-    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight1.position.set(1, 1, 1).normalize();
-    scene.add(directionalLight1);
+    const directionalLights = [
+        new THREE.DirectionalLight(0xffffff, 1.0),
+        new THREE.DirectionalLight(0xffffff, 1.0),
+        new THREE.DirectionalLight(0xffffff, 1.0),
+        new THREE.DirectionalLight(0xffffff, 1.0)
+    ];
 
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight2.position.set(-1, 1, -1).normalize();
-    scene.add(directionalLight2);
+    directionalLights[0].position.set(1, 1, 1).normalize();
+    directionalLights[1].position.set(-1, 1, -1).normalize();
+    directionalLights[2].position.set(-1, -1, 1).normalize();
+    directionalLights[3].position.set(1, -1, -1).normalize();
 
-    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight3.position.set(-1, -1, 1).normalize();
-    scene.add(directionalLight3);
-
-    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight4.position.set(1, -1, -1).normalize();
-    scene.add(directionalLight4);
+    directionalLights.forEach(light => scene.add(light));
 
     const loader = new THREE.GLTFLoader();
     let model;
-    const bones = [];
 
-    // 모델 로드
     loader.load(modelPath, function(gltf) {
         model = gltf.scene;
         scene.add(model);
@@ -78,52 +67,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
         skeleton.visible = false;
         scene.add(skeleton);
 
-        // 모델이 앞을 보도록 회전
-        model.rotation.y = Math.PI; // 180도 회전
+        model.rotation.y = Math.PI;
 
         model.scale.set(1, 1, 1);
         camera.position.z = 5;
 
-        // 모델의 바운딩 박스를 계산하여 모델의 중심을 구함
         const box = new THREE.Box3().setFromObject(model);
         const center = new THREE.Vector3();
         box.getCenter(center);
-        model.position.sub(center); // 모델의 중심을 원점으로 이동
+        model.position.sub(center);
 
-        // 카메라 위치 조정 (허리 높이에 맞춤)
         camera.position.set(0, center.y, 2);
-        // 카메라가 허리 높이를 바라보도록 설정
         camera.lookAt(new THREE.Vector3(0, center.y, 0));
 
-        // 키와 몸무게에 따른 스케일 조정
         const heightScale = height / initialHeight;
         const weightScale = weight / initialWeight;
         model.scale.set(weightScale, heightScale, weightScale);
 
-        // OrbitControls 추가
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.update();
 
-        // 모델의 뼈를 탐색하여 슬라이더 생성
         model.traverse((node) => {
             if (node.isBone) {
                 bones.push(node);
                 console.log('Bone found:', node.name);
-                createSliderForBone(node);
             }
         });
 
-        // 특정 메쉬 이름으로 옷을 제거
-        const removeObjects = ["Object_148", "Object_141", "Object_139", "Object_137"]; // 제거할 오브젝트 이름 리스트
-        removeObjects.forEach(name => {
-            const objectToRemove = model.getObjectByName(name);
-            if (objectToRemove) {
-                objectToRemove.parent.remove(objectToRemove); // 부모로부터 노드를 제거
-                console.log(`Removed object: ${objectToRemove.name}`);
-            }
-        });
-
-        // 텍스처 및 재질 확인
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
                 child.material = new THREE.MeshStandardMaterial({
@@ -137,67 +107,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
-        // 애니메이션 함수
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
-
-            // 각 뼈의 스케일을 슬라이더 값에 맞춰 업데이트
-            bones.forEach(bone => {
-                const slider = document.getElementById(`${bone.name}Slider`);
-                if (slider) {
-                    const scale = parseFloat(slider.value) / 100;
-                    bone.scale.set(scale, scale, scale);
-                    console.log(`Updated ${bone.name} scale to ${scale}`);
-                }
-            });
         }
         animate();
     }, undefined, function(error) {
         console.error('An error occurred while loading the model:', error);
     });
 
-    // 각 뼈에 대해 슬라이더를 생성하는 함수
-    function createSliderForBone(bone) {
-        const sliderContainer = document.createElement('div');
-        sliderContainer.className = 'slider-container';
-
-        const label = document.createElement('label');
-        label.className = 'form-label';
-        label.htmlFor = bone.name + 'Slider';
-        label.textContent = `${bone.name} Size:`;
-        sliderContainer.appendChild(label);
-
-        const slider = document.createElement('input');
-        slider.type = 'range';
-        slider.className = 'form-range';
-        slider.id = bone.name + 'Slider';
-        slider.min = 50;
-        slider.max = 200;
-        slider.step = 1;
-        slider.value = 100;
-        slider.addEventListener('input', function() {
-            document.getElementById(`${bone.name}SizeDisplay`).textContent = this.value;
-            const scale = parseFloat(this.value) / 100;
-            bone.scale.set(scale, scale, scale);
-            console.log(`Immediate update: ${bone.name} scale to ${scale}`);
+    function syncSliderAndInput(slider, input) {
+        slider.addEventListener('input', () => {
+            input.value = slider.value;
+            customizeAvatar();
         });
-        sliderContainer.appendChild(slider);
 
-        const sizeDisplay = document.createElement('p');
-        sizeDisplay.className = 'mt-3';
-        sizeDisplay.innerHTML = `${bone.name} Size: <span id="${bone.name}SizeDisplay">100</span>%`;
-        sliderContainer.appendChild(sizeDisplay);
-
-        slidersContainer.appendChild(sliderContainer);
+        input.addEventListener('input', () => {
+            slider.value = input.value;
+            customizeAvatar();
+        });
     }
+
+    const sliders = [
+        { slider: document.getElementById('shoulderWidthSlider'), input: document.getElementById('shoulderWidth') },
+        { slider: document.getElementById('chestCircumferenceSlider'), input: document.getElementById('chestCircumference') },
+        { slider: document.getElementById('armLengthSlider'), input: document.getElementById('armLength') },
+        { slider: document.getElementById('waistCircumferenceSlider'), input: document.getElementById('waistCircumference') },
+        { slider: document.getElementById('hipCircumferenceSlider'), input: document.getElementById('hipCircumference') },
+        { slider: document.getElementById('thighCircumferenceSlider'), input: document.getElementById('thighCircumference') },
+        { slider: document.getElementById('inseamSlider'), input: document.getElementById('inseam') },
+        { slider: document.getElementById('ankleCircumferenceSlider'), input: document.getElementById('ankleCircumference') }
+    ];
+
+    sliders.forEach(pair => syncSliderAndInput(pair.slider, pair.input));
 
     // '수정' 버튼 클릭 이벤트
     const editButton = document.getElementById('edit-button');
     editButton.addEventListener('click', () => {
         const editUrl = editButton.getAttribute('data-edit-url');
-        window.location.href = editUrl; // 홈페이지로 돌아가기
+        window.location.href = editUrl;
     });
 
     // '피팅하기' 버튼 클릭 이벤트
@@ -220,6 +169,55 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
 
         fittingUrl.search = params.toString();
-        window.location.href = fittingUrl.toString(); // 피팅 페이지로 이동
+        window.location.href = fittingUrl.toString();
+    });
+
+    document.getElementById('customizationForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        customizeAvatar();
     });
 });
+
+function customizeAvatar() {
+    const shoulderWidth = parseFloat(document.getElementById('shoulderWidth').value);
+    const chestCircumference = parseFloat(document.getElementById('chestCircumference').value);
+    const armLength = parseFloat(document.getElementById('armLength').value);
+
+    const waistCircumference = parseFloat(document.getElementById('waistCircumference').value);
+    const hipCircumference = parseFloat(document.getElementById('hipCircumference').value);
+    const thighCircumference = parseFloat(document.getElementById('thighCircumference').value);
+    const inseam = parseFloat(document.getElementById('inseam').value);
+    const ankleCircumference = parseFloat(document.getElementById('ankleCircumference').value);
+
+    const shoulderScaleFactor = shoulderWidth / 46;
+    const chestScaleFactor = chestCircumference / 100;
+    const armScaleFactor = armLength / 60;
+
+    const waistScaleFactor = waistCircumference / 70;
+    const hipScaleFactor = hipCircumference / 95;
+    const thighScaleFactor = thighCircumference / 55;
+    const inseamScaleFactor = inseam / 80;
+    const ankleScaleFactor = ankleCircumference / 25;
+
+    bones.forEach(bone => {
+        if (bone.name.includes('Clavicle')) {
+            bone.scale.x = shoulderScaleFactor;
+        } else if (bone.name.includes('Spine')) {
+            bone.scale.x = chestScaleFactor;
+        } else if (bone.name.includes('Upperarm') || bone.name.includes('Forearm')) {
+            bone.scale.y = armScaleFactor;
+        } else if (bone.name.includes('Pelvis')) {
+            bone.scale.x = waistScaleFactor;
+        } else if (bone.name.includes('Thigh')) {
+            bone.scale.x = hipScaleFactor;
+        } else if (bone.name.includes('Calf')) {
+            bone.scale.y = thighScaleFactor;
+        } else if (bone.name.includes('Foot')) {
+            bone.scale.y = inseamScaleFactor;
+        } else if (bone.name.includes('ToeBase')) {
+            bone.scale.x = ankleScaleFactor;
+        }
+    });
+
+    console.log('Avatar customized with updated measurements.');
+}
