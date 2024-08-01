@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_socketio import emit
-
-avatar_bp = Blueprint('avatar', __name__)
+from . import avatar_bp
 
 # 아바타 커스터마이즈 페이지 렌더링
 @avatar_bp.route('/customization', methods=['GET', 'POST'])
