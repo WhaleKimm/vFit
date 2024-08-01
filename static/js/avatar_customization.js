@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log('Bone found:', node.name);
             }
         });
+        
 
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
@@ -104,6 +105,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     roughness: child.material.roughness,
                     metalness: child.material.metalness
                 });
+            }
+        });
+        // 특정 메쉬 이름으로 옷을 제거
+        const removeObjects = ["Object_148", "Object_141", "Object_139", "Object_137"]; // 제거할 오브젝트 이름 리스트
+        removeObjects.forEach(name => {
+            const objectToRemove = model.getObjectByName(name);
+            if (objectToRemove) {
+                objectToRemove.parent.remove(objectToRemove); // 부모로부터 노드를 제거
+                console.log(`Removed object: ${objectToRemove.name}`);
             }
         });
 
