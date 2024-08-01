@@ -1,14 +1,17 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('Avatar customization script loaded');
+
+    // 아바타 미리보기와 슬라이더 컨테이너 엘리먼트를 가져옴
     const avatarPreview = document.getElementById('avatar-preview');
     const slidersContainer = document.getElementById('sliders-container');
-    
-    // data-model-path, data-body-shape, data-height, data-weight 속성 확인
+
+    // 모델 경로, 체형, 키, 몸무게 속성을 확인
     const modelPath = avatarPreview.getAttribute('data-model-path');
     const bodyShape = avatarPreview.getAttribute('data-body-shape');
     const height = parseFloat(avatarPreview.getAttribute('data-height'));
     const weight = parseFloat(avatarPreview.getAttribute('data-weight'));
 
+    // 모델 경로, 체형, 키, 몸무게가 유효한지 확인
     if (!modelPath || !bodyShape || isNaN(height) || isNaN(weight)) {
         console.error('Model path, body shape, height, or weight not found or invalid');
         return;
@@ -31,6 +34,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(avatarPreview.clientWidth, avatarPreview.clientHeight);
     avatarPreview.appendChild(renderer.domElement);
+
     // 로딩 중 텍스트 제거
     const loadingText = avatarPreview.querySelector('p');
     if (loadingText) {
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // 밝은 환경광
     scene.add(ambientLight);
 
-    // 추가 조명
+    // 추가 조명 설정
     const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.0);
     directionalLight1.position.set(1, 1, 1).normalize();
     scene.add(directionalLight1);
@@ -65,6 +69,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let model;
     const bones = [];
 
+    // 모델 로드
     loader.load(modelPath, function(gltf) {
         model = gltf.scene;
         scene.add(model);
@@ -85,8 +90,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
         box.getCenter(center);
         model.position.sub(center); // 모델의 중심을 원점으로 이동
 
-        camera.position.set(0, center.y, 2); // 카메라 위치 조정 (허리 높이에 맞춤)
-        camera.lookAt(new THREE.Vector3(0, center.y, 0)); // 카메라가 허리 높이를 바라보도록 설정
+        // 카메라 위치 조정 (허리 높이에 맞춤)
+        camera.position.set(0, center.y, 2);
+        // 카메라가 허리 높이를 바라보도록 설정
+        camera.lookAt(new THREE.Vector3(0, center.y, 0));
 
         // 키와 몸무게에 따른 스케일 조정
         const heightScale = height / initialHeight;
@@ -97,6 +104,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.update();
 
+        // 모델의 뼈를 탐색하여 슬라이더 생성
         model.traverse((node) => {
             if (node.isBone) {
                 bones.push(node);
@@ -129,11 +137,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
+        // 애니메이션 함수
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
 
+            // 각 뼈의 스케일을 슬라이더 값에 맞춰 업데이트
             bones.forEach(bone => {
                 const slider = document.getElementById(`${bone.name}Slider`);
                 if (slider) {
@@ -148,6 +158,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.error('An error occurred while loading the model:', error);
     });
 
+    // 각 뼈에 대해 슬라이더를 생성하는 함수
     function createSliderForBone(bone) {
         const sliderContainer = document.createElement('div');
         sliderContainer.className = 'slider-container';

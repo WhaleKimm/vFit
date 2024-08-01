@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const radioButtons = document.querySelectorAll('input[name="body_shape"]');
     console.log(`Found ${radioButtons.length} radio buttons`);
 
+    // 각 라디오 버튼에 변경 이벤트 리스너 추가
     radioButtons.forEach(radio => {
         radio.addEventListener('change', () => {
             console.log(`Radio button ${radio.id} changed`);
