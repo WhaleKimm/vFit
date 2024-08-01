@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const loader = new THREE.GLTFLoader();
     let model;
+    const hiddenObjects = []; // 숨겨진 객체를 저장하는 배열
 
     loader.load(modelPath, function(gltf) {
         model = gltf.scene;
@@ -99,6 +100,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
+        // 특정 메쉬 이름으로 옷을 숨기기
+        const removeObjects = ["Object_148", "Object_141", "Object_139", "Object_137"]; // 제거할 오브젝트 이름 리스트
+        removeObjects.forEach(name => {
+            const objectToHide = model.getObjectByName(name);
+            if (objectToHide) {
+                hiddenObjects.push(objectToHide); // 숨겨진 객체 배열에 추가
+                objectToHide.visible = false; // 객체 숨기기
+                console.log(`Hid object: ${objectToHide.name}`);
+            }
+        });
+
         // OrbitControls 추가
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.update();
@@ -112,4 +124,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }, undefined, function(error) {
         console.error('An error occurred while loading the model:', error);
     });
+
+    // 버튼 클릭 이벤트 핸들러 추가
+    document.getElementById('show-shirt').addEventListener('click', () => toggleClothingVisibility('Object_148'));
+    document.getElementById('show-pants').addEventListener('click', () => toggleClothingVisibility('Object_141'));
+    document.getElementById('show-underwear').addEventListener('click', () => toggleClothingVisibility('Object_139'));
+    document.getElementById('show-other').addEventListener('click', () => toggleClothingVisibility('Object_137'));
+
+    // 옷의 가시성을 토글하는 함수
+    function toggleClothingVisibility(objectName) {
+        const object = hiddenObjects.find(obj => obj.name === objectName);
+        if (object) {
+            object.visible = !object.visible;
+            console.log(`Toggled visibility for: ${objectName}, now ${object.visible ? 'visible' : 'hidden'}`);
+        }
+    }
 });

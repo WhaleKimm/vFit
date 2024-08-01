@@ -20,8 +20,16 @@
         <p><strong>Weight:</strong> {{ request.args.get('weight') }} kg</p>
     </div>
 
+  
+
     <div id="avatar-clothes-preview" class="mb-4">
-        <p>Virtual Fitting Here - Clothes</p>
+        <!-- 옷을 다시 입히기 위한 버튼 영역 -->
+    <div class="mt-4">
+        <button id="show-shirt" class="btn btn-primary">셔츠 입기/벗기</button>
+        <button id="show-pants" class="btn btn-primary">바지 입기/벗기</button>
+        <button id="show-underwear" class="btn btn-primary">속옷 입기/벗기</button>
+        <button id="show-other" class="btn btn-primary">신발 신기/벗기</button>
+    </div>
     </div>
 </div>
 {% endblock %}

@@ -36,13 +36,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (loadingText) {
         avatarPreview.removeChild(loadingText);
     }
-    
-
 
     // 배경 색상 설정 (덜 짙은 색)
     renderer.setClearColor(0xdddddd);
 
-  
     // 조명 추가
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // 밝은 환경광
     scene.add(ambientLight);
@@ -75,11 +72,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const skeleton = new THREE.SkeletonHelper(model);
         skeleton.visible = false;
         scene.add(skeleton);
+
         // 모델이 앞을 보도록 회전
         model.rotation.y = Math.PI; // 180도 회전
 
         model.scale.set(1, 1, 1);
         camera.position.z = 5;
+
         // 모델의 바운딩 박스를 계산하여 모델의 중심을 구함
         const box = new THREE.Box3().setFromObject(model);
         const center = new THREE.Vector3();
@@ -106,6 +105,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
+        // 특정 메쉬 이름으로 옷을 제거
+        const removeObjects = ["Object_148", "Object_141", "Object_139", "Object_137"]; // 제거할 오브젝트 이름 리스트
+        removeObjects.forEach(name => {
+            const objectToRemove = model.getObjectByName(name);
+            if (objectToRemove) {
+                objectToRemove.parent.remove(objectToRemove); // 부모로부터 노드를 제거
+                console.log(`Removed object: ${objectToRemove.name}`);
+            }
+        });
+
         // 텍스처 및 재질 확인
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
@@ -117,7 +126,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     roughness: child.material.roughness,
                     metalness: child.material.metalness
                 });
-               
             }
         });
 
