@@ -8,7 +8,10 @@
 
     <!-- 아바타 미리보기 큰 빈 칸 -->
     <div id="avatar-preview-container" class="mb-4 d-flex justify-content-center">
-        <div id="avatar-preview" data-model-path="{{ url_for('static', filename='models/realistic_female.glb') }}" data-url-params="{{ request.query_string.decode('utf-8') }}" style="width: 600px; height: 600px; background-color: #e0e0e0;">
+        <div id="avatar-preview" 
+             data-model-path="{{ url_for('static', filename='models/realistic_female.glb') }}" 
+             data-url-params="{{ request.query_string.decode('utf-8') }}" 
+             style="width: 600px; height: 600px; background-color: #e0e0e0;">
             <p>Loading 3D Model...</p>
         </div>
     </div>
@@ -66,6 +69,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
-<script src="{{ url_for('static', filename='js/socket.js') }}"></script>
 <script src="{{ url_for('static', filename='js/virtual_fitting.js') }}"></script>
 {% endblock %}

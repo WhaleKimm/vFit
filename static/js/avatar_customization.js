@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log('Bone found:', node.name);
             }
         });
-        
 
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
@@ -107,6 +106,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 });
             }
         });
+
         // 특정 메쉬 이름으로 옷을 제거
         const removeObjects = ["Object_148", "Object_141", "Object_139", "Object_137"]; // 제거할 오브젝트 이름 리스트
         removeObjects.forEach(name => {
@@ -171,11 +171,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         params.set('body_shape', bodyShape);
 
         // 각 슬라이더 값을 URL 매개변수로 추가
-        bones.forEach(bone => {
-            const slider = document.getElementById(`${bone.name}Slider`);
-            if (slider) {
-                params.set(`${bone.name}Size`, slider.value);
-            }
+        sliders.forEach(pair => {
+            params.set(pair.input.id, pair.input.value);
         });
 
         fittingUrl.search = params.toString();

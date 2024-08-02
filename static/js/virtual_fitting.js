@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const height = parseFloat(urlParams.get('height'));
     const weight = parseFloat(urlParams.get('weight'));
     const bodyShape = urlParams.get('body_shape');
+    const shoulderWidth = parseFloat(urlParams.get('shoulderWidth'));
+    const chestCircumference = parseFloat(urlParams.get('chestCircumference'));
+    const armLength = parseFloat(urlParams.get('armLength'));
+    const waistCircumference = parseFloat(urlParams.get('waistCircumference'));
+    const hipCircumference = parseFloat(urlParams.get('hipCircumference'));
+    const thighCircumference = parseFloat(urlParams.get('thighCircumference'));
+    const inseam = parseFloat(urlParams.get('inseam'));
+    const ankleCircumference = parseFloat(urlParams.get('ankleCircumference'));
 
     if (!modelPath || isNaN(height) || isNaN(weight) || !bodyShape) {
         console.error('Model path, body shape, height, or weight not found or invalid');
@@ -83,12 +91,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const weightScale = weight / initialWeight;
         model.scale.set(weightScale, heightScale, weightScale);
 
+        const shoulderScaleFactor = shoulderWidth / 46;
+        const chestScaleFactor = chestCircumference / 100;
+        const armScaleFactor = armLength / 60;
+        const waistScaleFactor = waistCircumference / 70;
+        const hipScaleFactor = hipCircumference / 95;
+        const thighScaleFactor = thighCircumference / 55;
+        const inseamScaleFactor = inseam / 80;
+        const ankleScaleFactor = ankleCircumference / 25;
+
         // 각 뼈에 대해 URL 매개변수에서 스케일 설정
         model.traverse((node) => {
             if (node.isBone) {
-                const scale = parseFloat(urlParams.get(`${node.name}Size`)) / 100 || 1;
-                node.scale.set(scale, scale, scale);
-                console.log(`Loaded ${node.name} scale to ${scale}`);
+                if (node.name.includes('Clavicle')) {
+                    node.scale.x = shoulderScaleFactor;
+                } else if (node.name.includes('Spine')) {
+                    node.scale.x = chestScaleFactor;
+                } else if (node.name.includes('Upperarm') || node.name.includes('Forearm')) {
+                    node.scale.y = armScaleFactor;
+                } else if (node.name.includes('Pelvis')) {
+                    node.scale.x = waistScaleFactor;
+                } else if (node.name.includes('Thigh')) {
+                    node.scale.x = hipScaleFactor;
+                } else if (node.name.includes('Calf')) {
+                    node.scale.y = thighScaleFactor;
+                } else if (node.name.includes('Foot')) {
+                    node.scale.y = inseamScaleFactor;
+                } else if (node.name.includes('ToeBase')) {
+                    node.scale.x = ankleScaleFactor;
+                }
+                console.log(`Loaded ${node.name} scale to ${node.scale.x}, ${node.scale.y}, ${node.scale.z}`);
             } else if (node.isMesh) {
                 node.material = new THREE.MeshStandardMaterial({
                     skinning: true,
