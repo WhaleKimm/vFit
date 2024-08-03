@@ -1,13 +1,9 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', function (event) {
     console.log('Document loaded');
-
-    // 아바타 선택 로직 추가
-    console.log('Avatar selection script loaded');
 
     const radioButtons = document.querySelectorAll('input[name="body_shape"]');
     console.log(`Found ${radioButtons.length} radio buttons`);
 
-    // 각 라디오 버튼에 변경 이벤트 리스너 추가
     radioButtons.forEach(radio => {
         radio.addEventListener('change', () => {
             console.log(`Radio button ${radio.id} changed`);
@@ -39,9 +35,43 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 return;
             }
 
-            // 폼 제출
-            console.log('Form submitted');
-            form.submit();
+            const data = {
+                body_shape: selectedShape.value,
+                height: height,
+                weight: weight
+            };
+
+            console.log('Sending data to server:', data);
+
+            fetch('/customization', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response from server:', data);
+                const modelPath = data.model_path;
+
+                // avatar_customization 페이지로 이동
+                const customizationUrl = new URL('/avatar/customization', window.location.origin);
+                customizationUrl.searchParams.set('model_path', modelPath);
+                customizationUrl.searchParams.set('body_shape', selectedShape.value);
+                customizationUrl.searchParams.set('height', height);
+                customizationUrl.searchParams.set('weight', weight);
+                window.location.href = customizationUrl.toString();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(`서버와 통신 중 오류가 발생했습니다. 나중에 다시 시도해 주세요. 오류 메시지: ${error.message || error}`);
+            });
         });
     } else {
         console.error('Form not found');

@@ -1,3 +1,4 @@
+# avatar_routes.py
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_socketio import emit
 from . import avatar_bp
@@ -21,10 +22,10 @@ def avatar_customization():
         ankle_circumference = request.form.get('ankleCircumference')
 
         # 데이터 처리 로직 (예: 데이터베이스에 저장하거나 다음 페이지에 전달)
-        return render_template('avatar_customization.html', body_shape=body_shape, height=height, weight=weight,
-                               shoulder_width=shoulder_width, chest_circumference=chest_circumference, arm_length=arm_length,
-                               waist_circumference=waist_circumference, hip_circumference=hip_circumference,
-                               thigh_circumference=thigh_circumference, inseam=inseam, ankle_circumference=ankle_circumference)
+        return redirect('avatar_customization.html', body_shape=body_shape, height=height, weight=weight,
+                                shoulder_width=shoulder_width, chest_circumference=chest_circumference, arm_length=arm_length,
+                                waist_circumference=waist_circumference, hip_circumference=hip_circumference,
+                                thigh_circumference=thigh_circumference, inseam=inseam, ankle_circumference=ankle_circumference)
 
     return render_template('avatar_customization.html')
 
