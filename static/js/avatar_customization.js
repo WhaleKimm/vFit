@@ -3,22 +3,26 @@ let bones = []; // bones 변수를 전역으로 선언
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('Avatar customization script loaded');
 
+    // HTML 요소들을 가져옴
     const avatarPreview = document.getElementById('avatar-preview');
     const slidersContainer = document.getElementById('sliders-container');
 
+    // 모델 경로, 체형, 키, 몸무게 속성을 가져옴
     const modelPath = avatarPreview.getAttribute('data-model-path');
     const bodyShape = avatarPreview.getAttribute('data-body-shape');
     const height = parseFloat(avatarPreview.getAttribute('data-height'));
     const weight = parseFloat(avatarPreview.getAttribute('data-weight'));
 
+    // 필수 속성들이 유효한지 확인
     if (!modelPath || !bodyShape || isNaN(height) || isNaN(weight)) {
         console.error('Model path, body shape, height, or weight not found or invalid');
         return;
     }
 
-    const initialHeight = 170;
-    const initialWeight = 70;
+    const initialHeight = 175;
+    const initialWeight = 55;
 
+    // 아바타 정보를 HTML에 표시
     const avatarInfo = document.getElementById('avatar-info');
     avatarInfo.innerHTML = `
         <p><strong>선택된 체형:</strong> ${bodyShape}</p>
@@ -26,19 +30,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
         <p><strong>몸무게:</strong> ${weight} kg</p>
     `;
 
+    // Three.js를 사용하여 3D 모델을 로드하고 렌더링
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, avatarPreview.clientWidth / avatarPreview.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(avatarPreview.clientWidth, avatarPreview.clientHeight);
     avatarPreview.appendChild(renderer.domElement);
 
+    // 로딩 중 텍스트 제거
     const loadingText = avatarPreview.querySelector('p');
     if (loadingText) {
         avatarPreview.removeChild(loadingText);
     }
 
+    // 배경 색상 설정
     renderer.setClearColor(0xdddddd);
 
+    // 조명 설정
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
 
@@ -48,17 +56,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
         new THREE.DirectionalLight(0xffffff, 1.0),
         new THREE.DirectionalLight(0xffffff, 1.0)
     ];
-
+    // 조명 위치 설정
     directionalLights[0].position.set(1, 1, 1).normalize();
     directionalLights[1].position.set(-1, 1, -1).normalize();
     directionalLights[2].position.set(-1, -1, 1).normalize();
     directionalLights[3].position.set(1, -1, -1).normalize();
 
+    // 조명을 씬에 추가
     directionalLights.forEach(light => scene.add(light));
 
     const loader = new THREE.GLTFLoader();
     let model;
 
+    // 모델 로드
     loader.load(modelPath, function(gltf) {
         model = gltf.scene;
         scene.add(model);
@@ -67,6 +77,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         skeleton.visible = false;
         scene.add(skeleton);
 
+        // 모델 회전 및 크기 조정
         model.rotation.y = Math.PI;
 
         model.scale.set(1, 1, 1);
@@ -87,6 +98,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.update();
 
+        // 모델의 뼈 탐색
         model.traverse((node) => {
             if (node.isBone) {
                 bones.push(node);
@@ -94,6 +106,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         });
 
+        // 텍스처 및 재질 설정
         gltf.scene.traverse((child) => {
             if (child.isMesh) {
                 child.material = new THREE.MeshStandardMaterial({
@@ -116,7 +129,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log(`Removed object: ${objectToRemove.name}`);
             }
         });
-
+        // 애니메이션 함수
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
@@ -127,6 +140,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.error('An error occurred while loading the model:', error);
     });
 
+    // 슬라이더와 입력 필드를 동기화하는 함수
     function syncSliderAndInput(slider, input) {
         slider.addEventListener('input', () => {
             input.value = slider.value;
@@ -189,23 +203,23 @@ function customizeAvatar() {
     const shoulderWidth = parseFloat(document.getElementById('shoulderWidth').value);
     const chestCircumference = parseFloat(document.getElementById('chestCircumference').value);
     const armLength = parseFloat(document.getElementById('armLength').value);
-
     const waistCircumference = parseFloat(document.getElementById('waistCircumference').value);
     const hipCircumference = parseFloat(document.getElementById('hipCircumference').value);
     const thighCircumference = parseFloat(document.getElementById('thighCircumference').value);
     const inseam = parseFloat(document.getElementById('inseam').value);
     const ankleCircumference = parseFloat(document.getElementById('ankleCircumference').value);
 
-    const shoulderScaleFactor = shoulderWidth / 46;
-    const chestScaleFactor = chestCircumference / 100;
-    const armScaleFactor = armLength / 60;
-
-    const waistScaleFactor = waistCircumference / 70;
-    const hipScaleFactor = hipCircumference / 95;
-    const thighScaleFactor = thighCircumference / 55;
-    const inseamScaleFactor = inseam / 80;
+    // 신체 부위별 스케일 조정 비율 계산
+    const shoulderScaleFactor = shoulderWidth / 42;
+    const chestScaleFactor = chestCircumference / 92;
+    const armScaleFactor = armLength / 62;
+    const waistScaleFactor = waistCircumference / 72;
+    const hipScaleFactor = hipCircumference / 98;
+    const thighScaleFactor = thighCircumference / 58;
+    const inseamScaleFactor = inseam / 87;
     const ankleScaleFactor = ankleCircumference / 25;
 
+    // 뼈 스케일 조정
     bones.forEach(bone => {
         if (bone.name.includes('Clavicle')) {
             bone.scale.x = shoulderScaleFactor;
