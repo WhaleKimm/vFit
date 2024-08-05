@@ -1,1 +1,0 @@
-"C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" --python "C:\vFit\scripts\modify_model.py" -- "C:\vFit\static\models\realistic_female.glb" "C:\vFit\static\models\modified_model.glb" "모래시계형" "180" "80"
