@@ -1,15 +1,20 @@
 import bpy
 import sys
+import time
 
 # 오브젝트 제거 함수
 def remove_objects_by_name(names):
+    start_time = time.time()
     for obj_name in names:
         obj = bpy.data.objects.get(obj_name)
         if obj:
             bpy.data.objects.remove(obj, do_unlink=True)
+    end_time = time.time()
+    print(f"Time to remove objects: {end_time - start_time:.2f} seconds")
 
 # 특정 버텍스 그룹을 X 및 Y 축으로 스케일링하는 함수
 def scale_vertex_group_xy_axis(obj, group_name, scale_factor, proportional_size=1.0):
+    start_time = time.time()
     group = obj.vertex_groups.get(group_name)
     if not group:
         print(f"Vertex group '{group_name}' not found.")
@@ -36,6 +41,8 @@ def scale_vertex_group_xy_axis(obj, group_name, scale_factor, proportional_size=
     
     # 객체 모드로 전환
     bpy.ops.object.mode_set(mode='OBJECT')
+    end_time = time.time()
+    print(f"Time to scale vertex group '{group_name}': {end_time - start_time:.2f} seconds")
 
 # 명령줄 인수 처리
 argv = sys.argv
@@ -48,7 +55,10 @@ height = float(argv[3])
 weight = float(argv[4])
 
 # 모델을 불러옵니다
+start_time = time.time()
 bpy.ops.import_scene.fbx(filepath=input_path)
+end_time = time.time()
+print(f"Time to import model: {end_time - start_time:.2f} seconds")
 
 # 기본 큐브 제거
 if 'Cube' in bpy.data.objects:
@@ -95,7 +105,10 @@ if obj:
     scale_vertex_group_xy_axis(obj, "CC_Base_R_UpperarmTwist02", 1.1, proportional_size=0.8)  # 오른쪽 상완
 
 # 모델을 저장합니다
+start_time = time.time()
 output_path_glb = output_path.replace('.fbx', '.glb')
-bpy.ops.export_scene.gltf(filepath=output_path_glb, export_format='GLB')
+bpy.ops.export_scene.gltf(filepath=output_path_glb, export_format='GLB', use_selection=False, export_apply=True, export_materials='NONE', export_animations=False)
+end_time = time.time()
+print(f"Time to export model: {end_time - start_time:.2f} seconds")
 
 print("Model saved to", output_path_glb)
