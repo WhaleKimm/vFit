@@ -19,8 +19,8 @@ def modify_avatar():
         # Blender 실행 파일 경로 지정 (절대 경로 사용)
         blender_executable = r'C:\Program Files\Blender Foundation\Blender 4.2\blender.exe'
         blender_script = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'scripts', 'modify_model.py'))
-        model_input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'models', 'realistic-female', 'source', 'Female Animation.fbx'))
-        model_output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'models', 'realistic-female', 'source', f'modified_model.fbx'))
+        model_input_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'models', 'koreanBody170cm_60kg.fbx'))
+        model_output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'models', 'modified_model.fbx'))
 
         # 블렌더를 사용하여 모델 수정
         result = subprocess.run([

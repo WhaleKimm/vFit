@@ -1,6 +1,7 @@
 import bpy
 import sys
 import time
+import mathutils
 
 # 오브젝트 제거 함수
 def remove_objects_by_name(names):
@@ -53,6 +54,55 @@ def print_vertex_groups(obj):
     else:
         print("No vertex groups found in the object or the object is not a mesh.")
 
+#키 조정 함수
+def adjust_height(armature, target_height, original_height=170.0):
+    scale_factor = target_height / original_height
+    
+    bpy.context.view_layer.objects.active = armature
+    bpy.ops.object.mode_set(mode='EDIT')
+    
+    edit_bones = armature.data.edit_bones
+    
+    # 다리 뼈대 (더 많이 조정)
+    leg_bones = ["CC_Base_L_Thigh", "CC_Base_L_Calf", "CC_Base_R_Thigh", "CC_Base_R_Calf"]
+    leg_scale_factor = scale_factor ** 1.2  # 다리를 더 극적으로 조정
+    
+    for bone_name in leg_bones:
+        bone = edit_bones.get(bone_name)
+        if bone:
+            bone.length *= leg_scale_factor
+            if "Thigh" in bone_name:
+                bone.head.z *= scale_factor
+            bone.tail.z *= scale_factor
+
+    # 상체 뼈대 (덜 조정)
+    upper_body_bones = ["CC_Base_Waist", "CC_Base_Spine01", "CC_Base_Spine02"]
+    upper_scale_factor = scale_factor ** 0.8  # 상체는 덜 조정
+    
+    for bone_name in upper_body_bones:
+        bone = edit_bones.get(bone_name)
+        if bone:
+            bone.length *= upper_scale_factor
+            bone.head.z *= scale_factor
+            bone.tail.z *= scale_factor
+
+    # 팔 뼈대
+    arm_bones = ["CC_Base_L_Upperarm", "CC_Base_L_Forearm", "CC_Base_R_Upperarm", "CC_Base_R_Forearm"]
+    for bone_name in arm_bones:
+        bone = edit_bones.get(bone_name)
+        if bone:
+            bone.length *= scale_factor
+    
+    # 목과 머리 위치 조정
+    neck_head_bones = ["CC_Base_NeckTwist01", "CC_Base_NeckTwist02", "CC_Base_Head"]
+    for bone_name in neck_head_bones:
+        bone = edit_bones.get(bone_name)
+        if bone:
+            bone.head.z *= scale_factor
+            bone.tail.z *= scale_factor
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
 # 명령줄 인수 처리
 argv = sys.argv
 argv = argv[argv.index("--") + 1:]  # get all args after "--"
@@ -104,6 +154,12 @@ if obj:
 
     # 체중 증가량 계산 (단위: kg)
     weight_increase = weight - initial_weight
+
+    # 아머처 찾기
+    armature = obj.find_armature()
+    if armature:
+        # 키 조정
+        adjust_height(armature, height, initial_height)
 
     # 부위별 체중 증가 비율 설정 (각 부위에 적절한 비율로 증가)
     pelvis_scale_factor = 1 + (0.005 * weight_increase)  # 엉덩이

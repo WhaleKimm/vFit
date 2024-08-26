@@ -1,1 +1,2 @@
-"C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" --background --python "C:\vFit\scripts\analyze_bones.py" -- "C:\vFit\static\models\realistic-female\source\Female Animation2.fbx"
+"C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" --background --python "C:\vFit\scripts\analyze_bones.py" -- "C:\vFit\static\models\realistic-female\source\Female Animation.fbx"
+
