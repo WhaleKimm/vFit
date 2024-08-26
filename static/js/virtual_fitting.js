@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     const initialHeight = 170; // 초기 키 값
-    const initialWeight = 70; // 초기 몸무게 값
+    const initialWeight = 60; // 초기 몸무게 값
 
     // Three.js를 사용하여 3D 모델을 로드하고 렌더링
     const scene = new THREE.Scene();

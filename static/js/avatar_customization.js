@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         return;
     }
 
-    const initialHeight = 175;
-    const initialWeight = 55;
+    const initialHeight = 170;
+    const initialWeight = 60;
 
     // 아바타 정보를 HTML에 표시
     const avatarInfo = document.getElementById('avatar-info');
@@ -72,29 +72,42 @@ document.addEventListener('DOMContentLoaded', (event) => {
     loader.load(modelPath, function(gltf) {
         model = gltf.scene;
         scene.add(model);
-
+    
         const skeleton = new THREE.SkeletonHelper(model);
         skeleton.visible = false;
         scene.add(skeleton);
-
-        // 모델 회전 및 크기 조정
-        model.rotation.y = Math.PI;
-
+    
         model.scale.set(1, 1, 1);
-        camera.position.z = 5;
-
+    
+        // 모델의 바운딩 박스 계산
         const box = new THREE.Box3().setFromObject(model);
         const center = new THREE.Vector3();
+        const size = new THREE.Vector3();
         box.getCenter(center);
+        box.getSize(size);
+    
+        // 모델을 중심에 맞추기 위해 이동
         model.position.sub(center);
-
-        camera.position.set(0, center.y, 2);
-        camera.lookAt(new THREE.Vector3(0, center.y, 0));
-
+    
+        // 모델의 발이 화면 바닥에 맞게 조정 (y축을 바닥에 맞추기)
+        model.position.y = -1; // 전체 높이만큼 내려서 발이 화면 아래에 위치하도록 함
+    
+        // 카메라 위치 조정
+        const distance = 1;
+        camera.position.set(1, 1.5, 3); // 카메라 높이를 0으로 설정하여 중앙에 맞춤
+    
+        // 카메라가 모델의 중심을 바라보도록 설정
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+    
         const heightScale = height / initialHeight;
         const weightScale = weight / initialWeight;
         model.scale.set(weightScale, heightScale, weightScale);
+        
+        // fov각 조절로 줌 효과
+        camera.fov = 30;
+        camera.updateProjectionMatrix();
 
+        // OrbitControls 초기화
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.update();
 

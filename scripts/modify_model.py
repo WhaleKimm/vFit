@@ -12,8 +12,8 @@ def remove_objects_by_name(names):
     end_time = time.time()
     print(f"Time to remove objects: {end_time - start_time:.2f} seconds")
 
-# 특정 버텍스 그룹을 X 및 Y 축으로 스케일링하는 함수
-def scale_vertex_group_xy_axis(obj, group_name, scale_factor, proportional_size=1.0):
+# 특정 버텍스 그룹을 X, Y 및 Z 축으로 스케일링하는 함수
+def scale_vertex_group(obj, group_name, scale_factor_x, scale_factor_y, scale_factor_z, proportional_size=1.0):
     start_time = time.time()
     group = obj.vertex_groups.get(group_name)
     if not group:
@@ -31,9 +31,9 @@ def scale_vertex_group_xy_axis(obj, group_name, scale_factor, proportional_size=
     bpy.ops.object.vertex_group_set_active(group=group.name)
     bpy.ops.object.vertex_group_select()
     
-    # 선택된 버텍스를 X 및 Y 축으로만 스케일링
+    # 선택된 버텍스를 X, Y 및 Z 축으로 스케일링
     bpy.ops.transform.resize(
-        value=(scale_factor, scale_factor, 1),
+        value=(scale_factor_x, scale_factor_y, scale_factor_z),
         proportional_edit_falloff='SMOOTH',
         proportional_size=proportional_size,
         use_proportional_edit=True
@@ -43,6 +43,15 @@ def scale_vertex_group_xy_axis(obj, group_name, scale_factor, proportional_size=
     bpy.ops.object.mode_set(mode='OBJECT')
     end_time = time.time()
     print(f"Time to scale vertex group '{group_name}': {end_time - start_time:.2f} seconds")
+
+# 버텍스 그룹 이름을 출력하는 함수
+def print_vertex_groups(obj):
+    if obj and obj.type == 'MESH' and obj.vertex_groups:
+        print("Vertex groups in the object:")
+        for group in obj.vertex_groups:
+            print(group.name)
+    else:
+        print("No vertex groups found in the object or the object is not a mesh.")
 
 # 명령줄 인수 처리
 argv = sys.argv
@@ -79,30 +88,49 @@ remove_objects = [
 # 오브젝트 제거
 remove_objects_by_name(remove_objects)
 
-# 'CC_Base_Body' 오브젝트를 찾습니다
-obj_name = "CC_Base_Body"
+# 'body.001' 오브젝트를 찾습니다
+obj_name = "body.001"
 obj = bpy.data.objects.get(obj_name)
+
+# 버텍스 그룹 출력
+print_vertex_groups(obj)
 
 if obj:
     bpy.context.view_layer.objects.active = obj
 
-    # 복부와 허리 부분에 해당하는 버텍스 그룹을 스케일링
-    scale_vertex_group_xy_axis(obj, "CC_Base_Waist", 1.2, proportional_size=0.8)  # 허리 부분
-    scale_vertex_group_xy_axis(obj, "CC_Base_Spine01", 1.2, proportional_size=0.8)  # 복부 상단
-    scale_vertex_group_xy_axis(obj, "CC_Base_Spine02", 1.2, proportional_size=0.8)  # 복부 하단
-    
-    # 엉덩이와 허벅지 부분에 해당하는 버텍스 그룹을 스케일링
-    scale_vertex_group_xy_axis(obj, "CC_Base_Pelvis", 1.2, proportional_size=0.8)  # 엉덩이 부분
-    scale_vertex_group_xy_axis(obj, "CC_Base_L_ThighTwist01", 1.2, proportional_size=0.8)  # 왼쪽 허벅지
-    scale_vertex_group_xy_axis(obj, "CC_Base_L_ThighTwist02", 1.2, proportional_size=0.8)  # 왼쪽 허벅지
-    scale_vertex_group_xy_axis(obj, "CC_Base_R_ThighTwist01", 1.2, proportional_size=0.8)  # 오른쪽 허벅지
-    scale_vertex_group_xy_axis(obj, "CC_Base_R_ThighTwist02", 1.2, proportional_size=0.8)  # 오른쪽 허벅지
+    # 현재 모델이 170cm, 60kg으로 가정
+    initial_height = 170
+    initial_weight = 60
 
-    # 팔과 어깨 부분에 해당하는 버텍스 그룹을 스케일링
-    scale_vertex_group_xy_axis(obj, "CC_Base_L_UpperarmTwist01", 1.1, proportional_size=0.8)  # 왼쪽 상완
-    scale_vertex_group_xy_axis(obj, "CC_Base_L_UpperarmTwist02", 1.1, proportional_size=0.8)  # 왼쪽 상완
-    scale_vertex_group_xy_axis(obj, "CC_Base_R_UpperarmTwist01", 1.1, proportional_size=0.8)  # 오른쪽 상완
-    scale_vertex_group_xy_axis(obj, "CC_Base_R_UpperarmTwist02", 1.1, proportional_size=0.8)  # 오른쪽 상완
+    # 체중 증가량 계산 (단위: kg)
+    weight_increase = weight - initial_weight
+
+    # 부위별 체중 증가 비율 설정 (각 부위에 적절한 비율로 증가)
+    pelvis_scale_factor = 1 + (0.005 * weight_increase)  # 엉덩이
+    thigh_scale_factor = 1 + (0.005 * weight_increase)  # 허벅지
+    spine_scale_factor = 1 + (0.0025 * weight_increase)  # 척추
+    upper_body_scale_factor = 1 + (0.005 * weight_increase)  # 상체
+    head_scale_factor = 1 - (0.0025 * weight_increase)  # 머리 (감소)
+
+    # 엉덩이 부분 스케일링
+    scale_vertex_group(obj, "Pelvis", pelvis_scale_factor, pelvis_scale_factor, pelvis_scale_factor, proportional_size=0.8)
+
+    # 허벅지 부분 스케일링
+    scale_vertex_group(obj, "Right_thigh", thigh_scale_factor, thigh_scale_factor, thigh_scale_factor, proportional_size=0.8)
+    scale_vertex_group(obj, "Left_thigh", thigh_scale_factor, thigh_scale_factor, thigh_scale_factor, proportional_size=0.8)
+
+    # 척추 부분 스케일링
+    scale_vertex_group(obj, "Spine", spine_scale_factor, spine_scale_factor, spine_scale_factor, proportional_size=0.8)
+    scale_vertex_group(obj, "Spine1", spine_scale_factor, spine_scale_factor, spine_scale_factor, proportional_size=0.8)
+    scale_vertex_group(obj, "Spine2", spine_scale_factor, spine_scale_factor, spine_scale_factor, proportional_size=0.8)
+    scale_vertex_group(obj, "Spine3", spine_scale_factor, spine_scale_factor, spine_scale_factor, proportional_size=0.8)
+
+    # 상체 부분 스케일링
+    scale_vertex_group(obj, "Left_Pectoral", upper_body_scale_factor, upper_body_scale_factor, upper_body_scale_factor, proportional_size=0.8)
+    scale_vertex_group(obj, "Right_Pectoral", upper_body_scale_factor, upper_body_scale_factor, upper_body_scale_factor, proportional_size=0.8)
+
+    # 머리 부분 스케일링
+    scale_vertex_group(obj, "Head", head_scale_factor, head_scale_factor, head_scale_factor, proportional_size=0.8)
 
 # 모델을 저장합니다
 start_time = time.time()
